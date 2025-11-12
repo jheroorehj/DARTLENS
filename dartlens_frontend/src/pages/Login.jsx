@@ -169,7 +169,7 @@ export default function Login() {
             name="email"
             type="email"
             autoComplete="email"
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+            className={`input-base ${
               errors.email
                 ? "border-red-300 focus:ring-red-200"
                 : "border-gray-300 focus:ring-blue-200"
@@ -198,7 +198,7 @@ export default function Login() {
             name="password"
             type={showPw ? "text" : "password"}
             autoComplete="current-password"
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+            className={`input-base ${
               errors.password
                 ? "border-red-300 focus:ring-red-200"
                 : "border-gray-300 focus:ring-blue-200"

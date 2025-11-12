@@ -1,17 +1,12 @@
 // src/components/Sidebar.jsx
 import { NavLink, useLocation } from "react-router-dom";
-
-const items = [
-  { key: "home", path: "/" },
-  { key: "dashboard", path: "/dashboard" },
-  { key: "info", path: "/info" },
-];
+import { NAV_ITEMS } from "../constants/navigation.js";
 
 export default function Sidebar() {
   const { pathname } = useLocation();
   return (
     <aside className="w-[200px] shrink-0 rounded-lg border bg-white p-3 flex flex-col items-center mt-1">
-      {items.map((it) => {
+      {NAV_ITEMS.map((it) => {
         const active =
           it.path === "/" ? pathname === "/" : pathname.startsWith(it.path);
         const img = `/${it.key}_${active ? "SEL" : "BTN"}.png`;

@@ -70,7 +70,7 @@ export default function Dashboard() {
   return (
     // 부모(App)의 h-[81vh] 높이를 모두 활용. min-h-0로 내부 스크롤 허용.
     <div className="w-full h-full p-4 flex flex-col min-h-0">
-      <div className="rounded-md border bg-white p-4 flex flex-col min-h-0 h-full">
+      <div className="panel-surface h-full">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-medium">MONITORING</h2>
           {corp && (
