@@ -58,16 +58,16 @@ export default function Home() {
   return (
     // 부모 높이 전부 사용 + 세로 플렉스. min-h-0로 자식이 축소 가능
     <div className="h-full w-full p-4 space-y-4 flex flex-col min-h-0">
-      <section className="rounded-lg border bg-white p-4">
+      <section className="card-surface-lg">
         <h2 className="text-lg font-medium mb-2">DART:Lens 안내</h2>
-        <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
+        <ul className="list-bullet">
           <li>검색창에서 원하는 기업을 검색해 선택하면 위시리스트에 추가할 수 있습니다.</li>
           <li>위시리스트에 추가된 기업은 모니터링 페이지에서 인사이트를 확인할 수 있습니다.</li>
         </ul>
       </section>
 
       {/* 검색 섹션: 내부에 결과 스크롤 영역을 갖는 컬럼 */}
-      <section className="rounded-lg border bg-white p-4 flex flex-col min-h-0">
+      <section className="card-surface-lg flex flex-col min-h-0">
         <div className="flex items-center gap-2">
           <label htmlFor="corp-search" className="text-sm text-gray-600">
             기업 검색
@@ -82,7 +82,7 @@ export default function Home() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="예: 더존비즈온 또는 00172291"
-            className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="input-base focus:ring-blue-200"
             aria-label="기업 검색"
             autoComplete="off"
           />
