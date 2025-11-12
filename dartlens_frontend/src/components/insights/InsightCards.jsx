@@ -1,6 +1,7 @@
 // src/components/insights/InsightCards.jsx
 import { ResponsiveContainer, LineChart, Line, Tooltip } from "recharts";
 import { fmtEok, fmtPct } from "./utils.js";
+import { INSIGHT_METRICS } from "../../constants/insightMetrics.js";
 
 function colorOpm(v) {
   if (v == null) return "text-gray-400";
@@ -57,18 +58,36 @@ export default function InsightCards({ rows = [] }) {
   });
 
   // 최신 유효값으로 카드 상단 수치 표시
-  const latestRevenue = latestValid(withDerived, "revenue");
-  const latestOpM = latestValid(withDerived, "op_margin");
-  const latestNiM = latestValid(withDerived, "ni_margin");
-  const latestDebt = latestValid(withDerived, "debt_ratio");
-  const latestRetain = latestValid(withDerived, "retained_ratio");
+  const latestByKey = Object.fromEntries(
+    INSIGHT_METRICS.map(({ key }) => [key, latestValid(withDerived, key)])
+  );
 
-  // 시계열: null 유지 → 라인 끊김 처리
-  const sRevenue = withDerived.map((r) => ({ x: r.year, y: r.revenue }));
-  const sOpM = withDerived.map((r) => ({ x: r.year, y: r.op_margin }));
-  const sNiM = withDerived.map((r) => ({ x: r.year, y: r.ni_margin }));
-  const sDebt = withDerived.map((r) => ({ x: r.year, y: r.debt_ratio }));
-  const sRetain = withDerived.map((r) => ({ x: r.year, y: r.retained_ratio }));
+  const seriesByKey = Object.fromEntries(
+    INSIGHT_METRICS.map(({ key }) => [key, withDerived.map((r) => ({ x: r.year, y: r[key] }))])
+  );
+
+  const formatters = {
+    eok: fmtEok,
+    pct: fmtPct,
+  };
+
+  const resolveColor = (value, color) => {
+    if (!color) return "text-gray-900";
+    switch (color.type) {
+      case "static":
+        return color.value;
+      case "opm":
+        return colorOpm(value);
+      case "nim":
+        return colorNim(value);
+      case "debt":
+        return colorDebt(value);
+      case "retained":
+        return rateColor01(value, color.thresholds || [200, 100]);
+      default:
+        return "text-gray-900";
+    }
+  };
 
   const Card = ({ title, valueNode, series, colorClass, foot }) => (
     <div className="rounded border p-3 flex flex-col gap-2">
@@ -94,77 +113,43 @@ export default function InsightCards({ rows = [] }) {
   return (
     <section className="card-surface space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        <Card
-          title="매출액"
-          valueNode={fmtOrDash(fmtEok, latestRevenue)}
-          series={sRevenue}
-          colorClass="text-gray-900"
-        />
-        <Card
-          title="영업이익률"
-          valueNode={fmtOrDash(fmtPct, latestOpM)}
-          series={sOpM}
-          colorClass={colorOpm(latestOpM)}
-        />
-        <Card
-          title="순이익률"
-          valueNode={fmtOrDash(fmtPct, latestNiM)}
-          series={sNiM}
-          colorClass={colorNim(latestNiM)}
-        />
-        <Card
-          title="부채비율"
-          valueNode={fmtOrDash(fmtPct, latestDebt)}
-          series={sDebt}
-          colorClass={colorDebt(latestDebt)}
-        />
-        <Card
-          title="유보율"
-          valueNode={fmtOrDash(fmtPct, latestRetain)}
-          series={sRetain}
-          colorClass={rateColor01(latestRetain, [200, 100])}
-        />
+        {INSIGHT_METRICS.map((metric) => {
+          const formatter = formatters[metric.format] || ((v) => v);
+          const latest = latestByKey[metric.key];
+          const series = seriesByKey[metric.key];
+          return (
+            <Card
+              key={metric.key}
+              title={metric.title}
+              valueNode={fmtOrDash(formatter, latest)}
+              series={series}
+              colorClass={resolveColor(latest, metric.color)}
+            />
+          );
+        })}
       </div>
 
       <div className="rounded-md border p-3">
         <div className="text-m mb-3">지표 설명과 기준</div>
         <ul className="text-xs space-y-5 text-gray-700">
-          <li>
-            <div className="font-medium text-gray-900">매출액: 기업 규모와 성장성</div>
-          </li>
-          <li>
-            <div className="font-medium text-gray-900">
-              영업이익률: 본업 수익성(
-              <span className="text-green-600">10% 이상</span>
-              <span className="text-yellow-600"> 5~10%</span>
-              <span className="text-red-600"> 5% 미만</span>)
-            </div>
-          </li>
-          <li>
-            <div className="font-medium text-gray-900">
-              순이익률: 전체 경영 효율(
-              <span className="text-green-600">8% 이상</span>
-              <span className="text-yellow-600"> 3~8%</span>
-              <span className="text-red-600"> 3% 미만</span>)
-            </div>
-          </li>
-          <li>
-            <div className="font-medium text-gray-900">
-              부채비율: 재무 건전성(
-              <span className="text-blue-600">100% 이하</span>
-              <span className="text-green-600"> 100~200%</span>
-              <span className="text-yellow-600"> 200~300%</span>
-              <span className="text-red-600"> 300% 이상</span>)
-            </div>
-          </li>
-          <li>
-            <div className="font-medium text-gray-900">
-              유보율: 내부 자본 축적력(
-              <span className="text-green-600">200% 이상</span>
-              <span className="text-yellow-600"> 100~200%</span>
-              <span className="text-red-600"> 100% 미만</span>)
-            </div>
-          </li>
+          {INSIGHT_METRICS.map((metric) => (
+            <li key={metric.key}>
+              <div className="font-medium text-gray-900">
+                {metric.explanation?.heading}
+                {metric.explanation?.ranges?.length ? (
+                  <>
+                    (
+                    {metric.explanation.ranges.map((range, idx) => (
+                      <span key={idx} className={range.className}>
+                        {range.text}
+                      </span>
+                    ))}
+                    )
+                  </>
+                ) : null}
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
 
