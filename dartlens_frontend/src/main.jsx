@@ -12,6 +12,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { SelectionProvider } from "./context/SelectionContext.jsx";
 import "./index.css";
+import "./styles.css";
 
 const router = createBrowserRouter([
   {

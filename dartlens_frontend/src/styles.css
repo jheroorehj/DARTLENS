@@ -1,0 +1,27 @@
+.card-outline {
+  @apply rounded-md border p-4;
+}
+
+.card-surface {
+  @apply rounded-md border bg-white p-4;
+}
+
+.panel-surface {
+  @apply rounded-md border bg-white p-4 flex flex-col min-h-0;
+}
+
+.card-surface-lg {
+  @apply rounded-lg border bg-white p-4;
+}
+
+.input-base {
+  @apply w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2;
+}
+
+.list-bullet {
+  @apply list-disc pl-5 text-sm text-gray-700 space-y-1;
+}
+
+.img-interactive {
+  @apply transition-transform duration-150 hover:scale-105 active:scale-100 hover:brightness-110;
+}

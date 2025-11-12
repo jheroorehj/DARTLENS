@@ -208,7 +208,7 @@ export default function Signup() {
             name="name"
             type="text"
             autoComplete="name"
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+            className={`input-base ${
               errors.name
                 ? "border-red-300 focus:ring-red-200"
                 : "border-gray-300 focus:ring-blue-200"
@@ -234,7 +234,7 @@ export default function Signup() {
             name="email"
             type="email"
             autoComplete="email"
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+            className={`input-base ${
               errors.email
                 ? "border-red-300 focus:ring-red-200"
                 : "border-gray-300 focus:ring-blue-200"
@@ -263,7 +263,7 @@ export default function Signup() {
             name="password"
             type={showPw ? "text" : "password"}
             autoComplete="new-password"
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+            className={`input-base ${
               errors.password
                 ? "border-red-300 focus:ring-red-200"
                 : "border-gray-300 focus:ring-blue-200"
@@ -296,7 +296,7 @@ export default function Signup() {
             name="confirm"
             type={showPw2 ? "text" : "password"}
             autoComplete="new-password"
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+            className={`input-base ${
               errors.confirm
                 ? "border-red-300 focus:ring-red-200"
                 : "border-gray-300 focus:ring-blue-200"
