@@ -1,0 +1,60 @@
+# ======================================
+# 환경 변수 / 민감 정보 (절대 업로드 금지)
+# ======================================
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.keystore
+*.db
+config.json
+credentials.json
+secrets.json
+apikeys.json
+
+# ======================================
+# Node.js / Frontend
+# ======================================
+node_modules/
+dist/
+dist-ssr/
+.vite/
+.cache/
+coverage/
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ======================================
+# Python / Backend
+# ======================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.venv/
+.conda/
+*.egg-info/
+
+# ======================================
+# macOS / IDE / 기타
+# ======================================
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*.sw?
