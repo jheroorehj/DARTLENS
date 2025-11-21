@@ -1,0 +1,4 @@
+
+db에 상장기업만 호출
+curl -X POST "http://localhost:4000/api/admin/ingest?year=2024&reprt_code=11014&fs_div=CFS" \
+  -H "X-Admin-Token: dartlens_admin_2025_secret_key"

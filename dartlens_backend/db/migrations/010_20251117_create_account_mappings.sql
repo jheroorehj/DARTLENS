@@ -1,0 +1,19 @@
+-- V2.0: DL_ACCOUNT_MAPPINGS 테이블 생성
+-- 재무계정 정규화를 위한 3-Tier 매핑 테이블
+
+CREATE TABLE IF NOT EXISTS DL_ACCOUNT_MAPPINGS (
+  TBLKEY VARCHAR(32) NOT NULL PRIMARY KEY COMMENT '테이블키 (UUID)',
+  ADDDATE VARCHAR(17) DEFAULT NULL COMMENT '추가 일시',
+  MODIFYDATE VARCHAR(17) DEFAULT NULL COMMENT '수정 일시',
+  COMKEY VARCHAR(32) DEFAULT NULL COMMENT '회사키',
+  normalized_key VARCHAR(50) NOT NULL UNIQUE COMMENT '정규화 키 (REVENUE, NET_INCOME 등)',
+  normalized_name_kr VARCHAR(100) NOT NULL COMMENT '정규화 한글명',
+  xbrl_account_id VARCHAR(200) DEFAULT NULL COMMENT 'XBRL 계정 ID (Tier 1)',
+  primary_kr_name VARCHAR(100) NOT NULL COMMENT '기본 한글명 (Tier 2)',
+  alias_1 VARCHAR(100) DEFAULT NULL COMMENT 'Alias 1 (Tier 3)',
+  alias_2 VARCHAR(100) DEFAULT NULL COMMENT 'Alias 2 (Tier 3)',
+  alias_3 VARCHAR(100) DEFAULT NULL COMMENT 'Alias 3 (Tier 3)',
+  category VARCHAR(20) DEFAULT NULL COMMENT '카테고리 (BS/IS/CF)',
+  INDEX idx_DL_ACCOUNT_xbrl (xbrl_account_id),
+  INDEX idx_DL_ACCOUNT_primary (primary_kr_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='계정과목 매핑';

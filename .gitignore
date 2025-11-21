@@ -1,0 +1,69 @@
+# ======================================
+# 환경 변수 / 민감 정보
+# ======================================
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.keystore
+*.db
+*.md
+config.json
+credentials.json
+secrets.json
+apikeys.json
+
+# ======================================
+# Node.js / Frontend / Backend
+# ======================================
+# 공통 Node.js
+node_modules/
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 프론트
+dartlens_web/node_modules/
+dartlens_web/dist/
+dartlens_web/dist-ssr/
+dartlens_web/.vite/
+dartlens_web/.cache/
+
+# 백엔드
+dartlens_backend/node_modules/
+dartlens_backend/dist/
+dartlens_backend/.cache/
+
+# ======================================
+# Python / Backend (추후 사용 대비)
+# ======================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.venv/
+.conda/
+*.egg-info/
+
+# ======================================
+# macOS / IDE / 기타
+# ======================================
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*.sw?

@@ -1,0 +1,170 @@
+/* 기본 레이아웃 */
+.signup-root {
+  min-height: calc(100vh - 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  background: #f9fafb;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.signup-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.signup-title {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.signup-sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.logo-link {
+  display: block;
+}
+
+.logo-img {
+  height: 48px;
+  width: auto;
+}
+
+/* 입력 요소 */
+.label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.label-mt {
+  margin-top: 16px;
+}
+
+.label-row {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px #bfdbfe;
+}
+
+.input-error {
+  border-color: #fca5a5;
+}
+
+.input-error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px #fecaca;
+}
+
+/* 에러 텍스트 */
+.error-text {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+/* 비밀번호 토글 */
+.pw-toggle {
+  font-size: 12px;
+  padding: 3px 6px;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.pw-toggle:hover {
+  color: #374151;
+}
+
+/* 약관 */
+.terms-box {
+  margin-top: 20px;
+}
+
+.terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.gray {
+  color: #6b7280;
+}
+
+/* 제출 버튼 */
+.submit-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 10px 14px;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+.submit-btn:hover {
+  background: #1d4ed8;
+}
+
+.submit-disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* 서버 오류 */
+.submit-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* 하단 링크 */
+.bottom-link {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.link-blue {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.link-blue:hover {
+  text-decoration: underline;
+}

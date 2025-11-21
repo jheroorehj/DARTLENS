@@ -1,0 +1,160 @@
+/* 전체 레이아웃 */
+.login-page {
+  min-height: calc(100vh - 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  background: #f7f7f7;
+}
+
+/* 카드 */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+/* 헤더 */
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.login-title {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.login-desc {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.home-link {
+  display: block;
+}
+
+.home-logo {
+  height: 48px;
+  width: auto;
+  transition: transform 0.15s ease;
+}
+
+.home-logo:hover {
+  transform: scale(0.95);
+}
+
+/* 에러박스 */
+.error-box {
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+/* 라벨 */
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* 입력 */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 2px #bfdbfe;
+}
+
+.input-error {
+  border-color: #fca5a5;
+}
+
+.input-error:focus {
+  border-color: #fecaca;
+  box-shadow: 0 0 0 2px #fee2e2;
+}
+
+/* 에러 텍스트 */
+.error-text {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+/* 비밀번호 토글 */
+.pw-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.pw-toggle {
+  font-size: 12px;
+  color: #6b7280;
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pw-toggle:hover {
+  color: #374151;
+}
+
+/* 제출 버튼 */
+.submit-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 10px;
+  font-size: 14px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.submit-btn:hover {
+  background: #1d4ed8;
+}
+
+.submit-disable {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.signup-text {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.signup-link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
