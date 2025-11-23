@@ -249,7 +249,7 @@ async function persistNormalizedReportRows(corp, year, reprtCode, fs, normalized
       const val = normalized?.[field.key] ?? null;
 
       await conn.execute(
-        `INSERT INTO financial_reports
+        `INSERT INTO DL_FINANCIAL_REPORTS
          (corp_code, stock_code, corp_name, bsns_year, reprt_code, fs_div,
           account_id, account_nm, thstrm_amount, frmtrm_amount, ord, last_update)
          VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())
@@ -281,7 +281,7 @@ async function persistNormalizedReportRows(corp, year, reprtCode, fs, normalized
 
 async function upsertFinancialKpis(corpCode, year, reprtCode, fs, kpis) {
   await pool.query(
-    `INSERT INTO financial_kpis
+    `INSERT INTO DL_FINANCIAL_KPIS
      (corp_code, bsns_year, reprt_code, fs_div,
       roe, debt_ratio, current_ratio, operating_margin,
       revenue_growth, eps, risk_score, governance_score, dividend_per_share)
@@ -351,7 +351,7 @@ async function loadNormalizedFromDb(corpCode, yearsList, fs) {
   const ph = yearsList.map(() => '?').join(',');
   const [rows] = await pool.query(
     `SELECT bsns_year, reprt_code, account_id, thstrm_amount
-     FROM financial_reports
+     FROM DL_FINANCIAL_REPORTS
      WHERE corp_code=? AND fs_div=? AND account_id LIKE 'NORM_%'
        AND bsns_year IN (${ph})`,
     [corpCode, fs, ...yearsList]
@@ -365,7 +365,7 @@ async function loadKpisFromDb(corpCode, yearsList, fs) {
   const ph = yearsList.map(() => '?').join(',');
   const [rows] = await pool.query(
     `SELECT *
-     FROM financial_kpis
+     FROM DL_FINANCIAL_KPIS
      WHERE corp_code=? AND fs_div=? AND bsns_year IN (${ph})`,
     [corpCode, fs, ...yearsList]
   );
@@ -458,7 +458,7 @@ export async function syncInsights(corpCode, years = 5, reprt = 'auto', fs = 'CF
 
   const [[corpRow]] = await pool.query(
     `SELECT corp_code, corp_name, stock_code
-     FROM corp_basic WHERE corp_code=? LIMIT 1`,
+     FROM DL_CORP_BASIC WHERE corp_code=? LIMIT 1`,
     [corpCode]
   );
 
@@ -506,7 +506,7 @@ export async function syncInsights(corpCode, years = 5, reprt = 'auto', fs = 'CF
 export async function getInsightsV2({ corp_code, years = 5, reprt = 'auto', fs = 'CFS', years_list = null }) {
   try {
     const [[corpRow]] = await pool.query(
-      'SELECT corp_code, corp_name FROM corp_basic WHERE corp_code = ? LIMIT 1',
+      'SELECT corp_code, corp_name FROM DL_CORP_BASIC WHERE corp_code = ? LIMIT 1',
       [corp_code]
     );
     if (!corpRow) throw new Error(`Corp not found: ${corp_code}`);

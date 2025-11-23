@@ -1,12 +1,7 @@
 // 변경: ① 최근연도 포함 5개년 수집 ② account_id/account_nm 길이 제한 유지
 
 import pool from '../db.js';
-import { getFnlttSinglAcntAll, getCompanyOutline } from './dartService.js';
-
-function sanitize(s, max = 4000) {
-  if (!s) return null;
-  return String(s).replace(/\s+/g, ' ').trim().slice(0, max);
-}
+import { getFnlttSinglAcntAll } from './dartService.js';
 
 function sanitizeLen(s, max) {
   if (s == null) return null;
@@ -15,7 +10,7 @@ function sanitizeLen(s, max) {
 
 async function logApi(endpoint, corp_code, params, status, duration_ms, error_msg) {
   await pool.execute(
-    'INSERT INTO api_call_log (endpoint, corp_code, params, status, duration_ms, error_msg) VALUES (?,?,?,?,?,?)',
+    'INSERT INTO DL_API_CALL_LOG (endpoint, corp_code, params, status, duration_ms, error_msg) VALUES (?,?,?,?,?,?)',
     [endpoint, corp_code, JSON.stringify(params ?? {}), status ?? null, duration_ms ?? null, error_msg ? String(error_msg).slice(0, 2000) : null]
   );
 }
@@ -23,27 +18,15 @@ async function logApi(endpoint, corp_code, params, status, duration_ms, error_ms
 export async function loadListedCorps({ corp_code } = {}) {
   if (corp_code) {
     const [one] = await pool.query(
-      'SELECT corp_code, corp_name, stock_code FROM corp_basic WHERE listed=1 AND corp_code=? LIMIT 1',
+      'SELECT corp_code, corp_name, stock_code FROM DL_CORP_BASIC WHERE listed=1 AND corp_code=? LIMIT 1',
       [corp_code]
     );
     return one;
   }
   const [rows] = await pool.query(
-    'SELECT corp_code, corp_name, stock_code FROM corp_basic WHERE listed=1'
+    'SELECT corp_code, corp_name, stock_code FROM DL_CORP_BASIC WHERE listed=1'
   );
   return rows;
-}
-
-async function upsertOutline(corp, outline) {
-  const overview = sanitize(outline?.business || outline?.bznsSumry || outline?.summary || outline?.companySummary);
-  const products = sanitize(outline?.main_products || outline?.mnpr || outline?.product || outline?.mainProduct);
-  await pool.execute(
-    `INSERT INTO corp_outline (corp_code, stock_code, corp_name, business_overview, main_products, last_update)
-     VALUES (?,?,?,?,?,NOW())
-     ON DUPLICATE KEY UPDATE stock_code=VALUES(stock_code), corp_name=VALUES(corp_name),
-       business_overview=VALUES(business_overview), main_products=VALUES(main_products), last_update=NOW()`,
-    [corp.corp_code, corp.stock_code, corp.corp_name, overview, products]
-  );
 }
 
 export async function upsertFinancials(corp, year, reprt_code, fs_div, data) {
@@ -52,7 +35,7 @@ export async function upsertFinancials(corp, year, reprt_code, fs_div, data) {
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
-    const sql = `INSERT INTO financial_reports
+    const sql = `INSERT INTO DL_FINANCIAL_REPORTS
       (corp_code, stock_code, corp_name, bsns_year, reprt_code, fs_div, account_id, account_nm, thstrm_amount, frmtrm_amount, ord, last_update)
       VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())
       ON DUPLICATE KEY UPDATE stock_code=VALUES(stock_code), corp_name=VALUES(corp_name),
@@ -117,14 +100,6 @@ export async function ingestForAllListed({ fs_div = 'CFS', limit = null, corp_co
           await logApi('fnlttSinglAcntAll.json', corp.corp_code,
             { corp_code: corp.corp_code, bsns_year: y, reprt_code, fs_div }, 0, Date.now() - t0, e.message);
         }
-      }
-
-      // 회사 개요 1회만 갱신
-      try {
-        const outline = await getCompanyOutline({ corp_code: corp.corp_code });
-        await upsertOutline(corp, outline);
-      } catch (e) {
-        await logApi('companyOutline.json', corp.corp_code, { corp_code: corp.corp_code }, 0, 0, e.message);
       }
     }
     processed += 1;

@@ -28,13 +28,13 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: '비밀번호 규칙을 확인하세요.' });
 
     // 이메일 중복 확인
-    const [dup] = await pool.query('SELECT id FROM users WHERE email = ?', [email?.toLowerCase()]);
+    const [dup] = await pool.query('SELECT id FROM DL_USER WHERE email = ?', [email?.toLowerCase()]);
     if (dup.length) return res.status(409).json({ message: '이미 가입된 이메일입니다.' });
 
     const hash = await bcrypt.hash(password, 12);
 
     await pool.query(
-      'INSERT INTO users (name, email, password_hash, marketing) VALUES (?, ?, ?, ?)',
+      'INSERT INTO DL_USER (name, email, password_hash, marketing) VALUES (?, ?, ?, ?)',
       [name.trim(), email.toLowerCase(), hash, agreeMarketing ? 1 : 0]
     );
 
@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
     if (!password) return res.status(400).json({ message: '비밀번호를 입력하세요.' });
 
     const [rows] = await pool.query(
-      'SELECT id, name, email, password_hash FROM users WHERE email = ?',
+      'SELECT id, name, email, password_hash FROM DL_USER WHERE email = ?',
       [email.toLowerCase()]
     );
     if (!rows.length) return res.status(401).json({ ok: false,  message: '이메일 또는 비밀번호가 올바르지 않습니다.' });
@@ -96,7 +96,7 @@ router.get('/me', async (req, res) => {
     if (!token) return res.status(401).json({ message: '인증 필요' });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const [rows] = await pool.query('SELECT id, name, email FROM users WHERE id = ?', [decoded.uid]);
+    const [rows] = await pool.query('SELECT id, name, email FROM DL_USER WHERE id = ?', [decoded.uid]);
     if (!rows.length) return res.status(401).json({ message: '인증 정보가 유효하지 않습니다.' });
 
     return res.json({ ok: true, user: rows[0] });

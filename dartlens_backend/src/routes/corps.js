@@ -19,7 +19,7 @@ router.get('/search', async (req, res) => {
 
   const sql = `
     SELECT corp_name, corp_code, stock_code
-    FROM corp_basic
+    FROM DL_CORP_BASIC
     WHERE listed=1
       AND (
            corp_name LIKE ?

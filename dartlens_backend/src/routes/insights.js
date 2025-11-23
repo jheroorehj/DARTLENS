@@ -35,7 +35,7 @@ router.get("/:corp_code", async (req, res) => {
     const fs = String(req.query.fs || "CFS");
 
     const [[corpRow]] = await pool.query(
-      "SELECT corp_name FROM corp_basic WHERE corp_code=? LIMIT 1",
+      "SELECT corp_name FROM DL_CORP_BASIC WHERE corp_code=? LIMIT 1",
       [corp_code]
     );
 
@@ -66,7 +66,7 @@ router.post("/sync", async (req, res) => {
   try {
     // 기업 메타
     const [[corp]] = await pool.query(
-      "SELECT corp_code, corp_name, stock_code FROM corp_basic WHERE corp_code=? LIMIT 1",
+      "SELECT corp_code, corp_name, stock_code FROM DL_CORP_BASIC WHERE corp_code=? LIMIT 1",
       [corp_code]
     );
     if (!corp) {
@@ -79,7 +79,7 @@ router.post("/sync", async (req, res) => {
 
     const [rows] = await pool.query(
       `SELECT DISTINCT bsns_year, reprt_code
-       FROM financial_reports
+       FROM DL_FINANCIAL_REPORTS
        WHERE corp_code=? AND fs_div=?
          AND bsns_year BETWEEN ? AND ?
          AND reprt_code IN (11011,11012,11013,11014)`,

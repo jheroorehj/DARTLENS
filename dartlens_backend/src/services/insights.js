@@ -35,7 +35,7 @@ async function fetchYearRows({ corp_code, year, fs, reprt }) {
   if (reprt && reprt !== "auto") {
     const [rows] = await pool.query(
       `SELECT bsns_year, reprt_code, account_id, account_nm, thstrm_amount
-         FROM financial_reports
+         FROM DL_FINANCIAL_REPORTS
         WHERE corp_code=? AND fs_div=? AND bsns_year=? AND reprt_code=?
         ORDER BY ord ASC`,
       [corp_code, fs, String(year), String(reprt)]
@@ -46,7 +46,7 @@ async function fetchYearRows({ corp_code, year, fs, reprt }) {
   // auto: 우선순위 높은 보고서 하나 선택 후 그 코드의 계정만 사용
   const [rows] = await pool.query(
     `SELECT bsns_year, reprt_code, account_id, account_nm, thstrm_amount
-       FROM financial_reports
+       FROM DL_FINANCIAL_REPORTS
       WHERE corp_code=? AND fs_div=? AND bsns_year=? AND reprt_code IN (?,?,?,?)
       ORDER BY FIELD(reprt_code, ?, ?, ?, ?) ASC, ord ASC`,
     [corp_code, fs, String(year), ...REPRT_PRIORITY, ...REPRT_PRIORITY]
