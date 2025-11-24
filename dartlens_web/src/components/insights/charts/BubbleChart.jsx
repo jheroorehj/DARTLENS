@@ -114,8 +114,9 @@ export default function BubbleChart({
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={450}>
-        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+      <div className="chart-scroll-wrapper chart-aspect-16-9">
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart margin={{ top: 5, right: 0, bottom: 5, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 
           <XAxis
@@ -185,6 +186,7 @@ export default function BubbleChart({
           ))}
         </ScatterChart>
       </ResponsiveContainer>
+      </div>
 
       {/* Quadrant Legend */}
       <div className="bubble-legend">

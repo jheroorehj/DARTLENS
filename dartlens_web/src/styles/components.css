@@ -154,37 +154,52 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  overflow: visible;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .metrics-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-sm);
-  overflow: visible;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Financial Metrics Grid - 3 columns */
+/* Financial Metrics Grid - 6 columns on desktop (1:1 ratio) */
 .metrics-grid-financial {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Non-Financial Metrics Grid - 3 columns */
+/* Non-Financial Metrics Grid - same as financial */
 .metrics-grid-nonfinancial {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Desktop: 1:1 aspect ratio for metric cards */
+.metric-card {
+  aspect-ratio: 1 / 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 @media (max-width: 1024px) {
   .metrics-grid-financial,
   .metrics-grid-nonfinancial {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 640px) {
   .metrics-grid-financial,
   .metrics-grid-nonfinancial {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -272,8 +287,6 @@
 }
 
 .metric-card-tooltip-portal {
-  min-width: 280px;
-  max-width: 360px;
   padding: var(--spacing-md);
   background: white;
   border: 1px solid var(--color-border);
@@ -284,14 +297,38 @@
   white-space: normal;
 }
 
-.metric-card-tooltip-portal::after {
+/* 데스크탑: ? 버튼 바로 위/아래에 표시 */
+.metric-card-tooltip-portal.desktop {
+  min-width: 200px;
+  max-width: 320px;
+}
+
+/* 데스크탑 꼬리 (위에 표시될 때) */
+.metric-card-tooltip-portal.desktop.above::after {
   content: '';
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border: 6px solid transparent;
+  border: 8px solid transparent;
   border-top-color: white;
+}
+
+/* 데스크탑 꼬리 (아래에 표시될 때) */
+.metric-card-tooltip-portal.desktop.below::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-bottom-color: white;
+}
+
+/* 모바일: 화면 가운데 */
+.metric-card-tooltip-portal.mobile {
+  min-width: 0;
+  max-width: calc(100vw - 32px);
 }
 
 .metric-card-value {
@@ -971,4 +1008,365 @@
   font-size: var(--font-size-base);
   color: var(--color-text-secondary);
   line-height: 1.6;
+}
+
+/* ========================================
+   CHART ASPECT RATIO
+   ======================================== */
+
+/* 16:9 aspect ratio for charts - always full width */
+.chart-aspect-16-9 {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+}
+
+/* Mobile: chart area expands to full viewport width */
+@media (max-width: 768px) {
+  /* Reduce card padding on mobile for charts */
+  .card-surface.insight-cards {
+    padding: 8px;
+  }
+
+  /* Chart containers - expand beyond parent padding */
+  .dual-axis-chart-container,
+  .bubble-chart-container,
+  .correlation-chart-container,
+  .grouped-bar-chart-container {
+    margin-left: -8px;
+    margin-right: -8px;
+    width: calc(100% + 16px);
+    padding: 0;
+  }
+
+  /* Chart header/footer need padding since container has none */
+  .dual-axis-chart-container .chart-header,
+  .bubble-chart-container .chart-header,
+  .correlation-chart-container .chart-header,
+  .grouped-bar-chart-container .chart-header {
+    padding: 8px 12px 4px 12px;
+  }
+
+  .dual-axis-chart-container .chart-footer,
+  .bubble-chart-container .chart-footer,
+  .correlation-chart-container .chart-footer,
+  .grouped-bar-chart-container .chart-footer,
+  .bubble-chart-container .bubble-legend {
+    padding: 4px 12px 8px 12px;
+  }
+
+  /* Chart wrapper fills container */
+  .chart-scroll-wrapper {
+    width: 100%;
+  }
+
+  .chart-aspect-16-9 {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+}
+
+/* Recharts Legend responsive sizing */
+.recharts-legend-wrapper {
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .recharts-legend-wrapper {
+    font-size: 10px !important;
+  }
+
+  .recharts-legend-item {
+    margin-right: 8px !important;
+  }
+
+  .recharts-legend-item-text {
+    font-size: 10px !important;
+  }
+
+  .recharts-surface {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recharts-legend-wrapper {
+    font-size: 8px !important;
+  }
+
+  .recharts-legend-item-text {
+    font-size: 8px !important;
+  }
+}
+
+/* ========================================
+   MOBILE RESPONSIVE ENHANCEMENTS
+   ======================================== */
+
+/* Mobile Chart - Auto scale to fit screen */
+@media (max-width: 768px) {
+  /* Chart responsive - scale to fit */
+  .correlation-chart-container .recharts-responsive-container,
+  .dual-axis-chart-container .recharts-responsive-container,
+  .bubble-chart-container .recharts-responsive-container,
+  .grouped-bar-chart-container .recharts-responsive-container {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+
+  /* Investment Grade Cards - 3 in a row on mobile */
+  .executive-summary-scores {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: var(--spacing-xs);
+  }
+
+  .score-card {
+    padding: var(--spacing-xs);
+  }
+
+  .score-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .score-card-icon {
+    font-size: 1.25rem;
+  }
+
+  .score-card-title {
+    font-size: var(--font-size-xs);
+  }
+
+  .score-card-subtitle {
+    font-size: 9px;
+  }
+
+  .score-card-value {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .score-number {
+    font-size: 1.25rem;
+  }
+
+  .score-max {
+    font-size: var(--font-size-xs);
+  }
+
+  .score-bonus {
+    font-size: 9px;
+    padding: 0.05rem 0.3rem;
+  }
+
+  .score-card-bar {
+    height: 4px;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .score-card-insight {
+    font-size: 9px;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .score-card-rating {
+    font-size: var(--font-size-xs);
+  }
+
+  /* Metrics Grid - 3 square cards in a row */
+  .metrics-grid-financial,
+  .metrics-grid-nonfinancial {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: var(--spacing-xs);
+  }
+
+  .metric-card {
+    aspect-ratio: 1 / 1;
+    padding: var(--spacing-xs);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .metric-card-title {
+    font-size: 10px;
+  }
+
+  .metric-card-value {
+    font-size: var(--font-size-sm);
+  }
+
+  .metric-card-chart {
+    height: 1.5rem;
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Executive Summary Mobile */
+  .executive-summary {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .executive-summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-xs);
+  }
+
+  .executive-summary-title {
+    font-size: var(--font-size-base);
+  }
+
+  .executive-summary-overall {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .overall-grade {
+    font-size: 1rem;
+  }
+
+  .overall-stars {
+    font-size: 0.875rem;
+  }
+
+  .overall-recommendation {
+    font-size: 10px;
+    padding: 0.15rem 0.35rem;
+  }
+
+  /* Score Card - smaller on very small screens */
+  .score-card-icon {
+    font-size: 1rem;
+  }
+
+  .score-card-title {
+    font-size: 10px;
+  }
+
+  .score-card-subtitle {
+    display: none;
+  }
+
+  .score-number {
+    font-size: 1rem;
+  }
+
+  .score-max {
+    font-size: 10px;
+  }
+
+  .score-card-insight {
+    display: none;
+  }
+
+  .score-card-rating {
+    font-size: 10px;
+  }
+
+  /* Metric Card - smaller on very small screens */
+  .metric-card {
+    aspect-ratio: 1 / 1;
+    padding: var(--spacing-xs);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .metric-card-title {
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  .metric-card-value {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+  }
+
+  .metric-card-chart {
+    height: 1.25rem;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .metric-card-tooltip-portal {
+    min-width: 0;
+    max-width: calc(100vw - 20px);
+    width: auto;
+    left: 50% !important;
+    font-size: 11px;
+    padding: var(--spacing-sm);
+  }
+
+  .metric-card-tooltip-formula {
+    font-size: 10px;
+    word-break: break-all;
+  }
+
+  .metric-card-tooltip-desc {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  /* Chart styles */
+  .chart-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .chart-subtitle {
+    font-size: 10px;
+  }
+
+  .stat-badge {
+    padding: 0.2rem 0.4rem;
+    font-size: 9px;
+  }
+
+  .chart-insight {
+    font-size: 10px;
+    padding: var(--spacing-xs);
+  }
+
+  /* Wishlist Mobile */
+  .wishlist-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .wishlist-item-name {
+    font-size: var(--font-size-xs);
+  }
+
+  .wishlist-action-btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 10px;
+  }
+}
+
+/* Touch-friendly targets */
+@media (max-width: 768px) {
+  .wishlist-action-btn,
+  .toggle-button,
+  .topbar-auth-btn,
+  .topbar-wishlist-btn,
+  .topbar-logout-btn {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wishlist-item {
+    min-height: 48px;
+  }
 }

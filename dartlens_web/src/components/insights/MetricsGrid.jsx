@@ -62,18 +62,53 @@ export default function MetricsGrid({ rows = [] }) {
    */
   function MetricCard({ title, value, series, colorClass, footer, tooltip }) {
     const [showTooltip, setShowTooltip] = useState(false);
-    const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+    const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0, triggerLeft: 0, isMobile: false, showBelow: false });
     const triggerRef = useRef(null);
 
     useEffect(() => {
       if (showTooltip && triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const isMobile = viewportWidth <= 768;
+        const spaceAbove = rect.top;
+        const showBelow = spaceAbove < 150;
+
         setTooltipPosition({
-          top: rect.top - 8,
+          top: showBelow ? rect.bottom + 12 : rect.top - 12,
           left: rect.left + rect.width / 2,
+          triggerLeft: rect.left + rect.width / 2,
+          isMobile,
+          showBelow,
         });
       }
     }, [showTooltip]);
+
+    const getTooltipStyle = () => {
+      const { top, left, isMobile, showBelow } = tooltipPosition;
+
+      if (isMobile) {
+        // 모바일: 화면 가운데 고정
+        return {
+          position: 'fixed',
+          top: `${top}px`,
+          left: '50%',
+          transform: `translateX(-50%) ${showBelow ? 'translateY(0)' : 'translateY(-100%)'}`,
+          maxWidth: 'calc(100vw - 32px)',
+          width: '320px',
+        };
+      } else {
+        // 데스크탑: ? 버튼 바로 위에 표시
+        return {
+          position: 'fixed',
+          top: `${top}px`,
+          left: `${left}px`,
+          transform: `translateX(-50%) ${showBelow ? 'translateY(0)' : 'translateY(-100%)'}`,
+          maxWidth: '320px',
+          width: 'auto',
+          minWidth: '200px',
+        };
+      }
+    };
 
     return (
       <div className="metric-card">
@@ -86,18 +121,21 @@ export default function MetricsGrid({ rows = [] }) {
                 className="metric-card-info"
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowTooltip(!showTooltip);
+                }}
+                onTouchStart={(e) => {
+                  e.stopPropagation();
+                  setShowTooltip(!showTooltip);
+                }}
               >
                 ?
               </span>
               {showTooltip && createPortal(
                 <div
-                  className="metric-card-tooltip-portal"
-                  style={{
-                    position: 'fixed',
-                    top: `${tooltipPosition.top}px`,
-                    left: `${tooltipPosition.left}px`,
-                    transform: 'translate(-50%, -100%)',
-                  }}
+                  className={`metric-card-tooltip-portal ${tooltipPosition.isMobile ? 'mobile' : 'desktop'} ${tooltipPosition.showBelow ? 'below' : 'above'}`}
+                  style={getTooltipStyle()}
                 >
                   <div className="metric-card-tooltip-formula">{tooltip.formula}</div>
                   <div className="metric-card-tooltip-desc">{tooltip.description}</div>
@@ -117,6 +155,12 @@ export default function MetricsGrid({ rows = [] }) {
                   const num = typeof value === 'number' && Number.isFinite(value) ? value : 0;
                   return [num.toLocaleString(), ''];
                 }}
+                labelFormatter={(label, payload) => {
+                  if (payload && payload[0] && payload[0].payload) {
+                    return `${payload[0].payload.x}년`;
+                  }
+                  return '';
+                }}
                 contentStyle={{ fontSize: 12, padding: "4px 6px" }}
                 wrapperStyle={{ outline: "none" }}
               />
@@ -126,7 +170,7 @@ export default function MetricsGrid({ rows = [] }) {
                 dot={false}
                 strokeWidth={2}
                 connectNulls={false}
-                stroke="#374151"
+                stroke="#9ca3af"
               />
             </LineChart>
           </ResponsiveContainer>
@@ -168,6 +212,7 @@ export default function MetricsGrid({ rows = [] }) {
                 value={safeFormat(formatter, latestValue)}
                 series={series}
                 colorClass={colorClass}
+                tooltip={metric.tooltip}
               />
             );
           })}

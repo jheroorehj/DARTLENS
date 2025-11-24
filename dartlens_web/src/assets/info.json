@@ -1,86 +1,103 @@
 {
-  "version": "0.1.0",
-  "updated_at": "2025-11-05",
+  "version": "2.2.1",
+  "updated_at": "2025-11-24",
   "overview": {
-    "purpose": "공시 기반 재무 인사이트 제공",
-    "audience": "상장사 모니터링이 필요한 실무자",
+    "purpose": "공시 기반 투자 인사이트 및 등급 분석 제공",
+    "audience": "상장사 투자 분석이 필요한 개인·실무자",
     "scope": {
-      "listing": "상장사 중심",
+      "listing": "KOSPI/KOSDAQ 상장사",
       "years": 5,
       "fs_priority": ["CFS", "OFS"],
       "reprt_priority": ["11014", "11013", "11012", "11011"]
     }
   },
+  "features": {
+    "investment_grade": {
+      "title": "투자 등급 분석",
+      "description": "안전성·성장성·수익성 3개 카테고리로 0~10점 스코어링 후 종합 등급(A+~D) 및 별점 제공",
+      "categories": [
+        { "name": "안전성", "weight": "레버리지 25% + 유동성 25% + 수익성 안정성 25% + 거버넌스/리스크 25%" },
+        { "name": "성장성", "weight": "Level 70% + Trend 30% (매출 트렌드, 영업이익률 트렌드)" },
+        { "name": "수익성", "weight": "ROE 40% + EPS 성장 35% + EPS 수준 25% - 변동성 패널티" }
+      ]
+    },
+    "financial_kpis": {
+      "title": "재무 KPI (6개)",
+      "items": [
+        { "name": "ROE", "formula": "당기순이익 / 자본총계 x 100", "unit": "%" },
+        { "name": "부채비율", "formula": "부채총계 / 자본총계 x 100", "unit": "%" },
+        { "name": "유동비율", "formula": "유동자산 / 유동부채 x 100", "unit": "%" },
+        { "name": "영업이익률", "formula": "영업이익 / 매출액 x 100", "unit": "%" },
+        { "name": "매출성장률", "formula": "(당해 매출 - 전년 매출) / 전년 매출 x 100", "unit": "%" },
+        { "name": "EPS", "formula": "당기순이익 / 발행주식수", "unit": "원" }
+      ]
+    },
+    "non_financial_kpis": {
+      "title": "비재무 KPI (3개)",
+      "items": [
+        { "name": "리스크 점수", "formula": "100 - (부도x40 + 회생x40 + 감사의견x20 + 거래정지x20 + 소송x2)", "range": "0~100점" },
+        { "name": "거버넌스 점수", "formula": "대주주 안정성(4) + 내부자거래(3) + 직원증가(3)", "range": "0~10점" },
+        { "name": "주당배당금", "formula": "DART 공시 기준 DPS", "unit": "원" }
+      ]
+    },
+    "charts": {
+      "title": "시각화 차트",
+      "items": [
+        "수익성 추세 (ROE vs EPS 이중축)",
+        "성장성 vs 수익성 버블차트",
+        "부채비율 vs 유동비율 상관관계",
+        "영업이익률 vs ROE 상관관계",
+        "연도별 비교 그룹 바차트"
+      ]
+    }
+  },
   "data_sources": {
     "opendart": {
-      "used_items": [
-        "매출",
-        "영업이익",
-        "순이익",
-        "자산",
-        "부채",
-        "자본",
-        "현금흐름(확대 예정)"
+      "used_apis": [
+        "fnlttSinglAcntAll (재무제표)",
+        "alotMatter (배당금)",
+        "hyslrSttus (대주주현황)",
+        "exctvSttus (임원현황)",
+        "empSttus (직원현황)"
       ],
       "excluded": ["실시간 주가", "시가총액"],
       "refresh_policy": {
         "manual_sync": "버튼 클릭 시 수집·업서트",
-        "auto_sync": "ON 시 추가 즉시 동기화",
+        "auto_sync": "위시리스트 추가 시 자동 동기화",
         "cache_ttl_hours": 24
       }
     }
   },
-  "metrics": {
-    "definitions": [
-      { "name": "영업이익률", "formula": "영업이익 ÷ 매출 × 100", "unit": "%" },
-      { "name": "순이익률", "formula": "순이익 ÷ 매출 × 100", "unit": "%" },
-      { "name": "부채비율", "formula": "총부채 ÷ 자기자본 × 100", "unit": "%" },
-      { "name": "유보율", "formula": "이익잉여금 ÷ 자기자본 × 100", "unit": "%" },
-      { "name": "ROA(예정)", "formula": "순이익 ÷ 총자산 × 100", "unit": "%" },
-      { "name": "잉여현금흐름(예정)", "formula": "영업CF − 투자CF", "unit": "원" }
-    ],
-    "thresholds": {
-      "영업이익률": { "good": "≥10", "warn": "5~10", "bad": "<5" },
-      "순이익률": { "good": "≥8", "warn": "3~8", "bad": "<3" },
-      "부채비율": { "std": "≤100", "ok": "100~200", "warn": "200~300", "risk": ">300" },
-      "유보율": { "good": "≥200", "ok": "100~200", "weak": "<100" }
-    }
-  },
-  "report_priority": {
-    "reprt_code": ["11014", "11013", "11012", "11011"],
-    "fs_div": ["CFS", "OFS"]
-  },
-  "missing_value_policy": {
-    "division_by_zero": "지표 미표시(null)",
-    "negative_equity": "지표 계산 제외",
-    "fallback_accounts": "대체 계정 매핑 시도",
-    "rendering": { "null_display": "—", "badge_color": "gray" }
+  "thresholds": {
+    "ROE": { "excellent": "10% 이상", "good": "5~10%", "warning": "0~5%", "poor": "0% 미만" },
+    "부채비율": { "excellent": "100% 이하", "good": "100~200%", "warning": "200~300%", "poor": "300% 이상" },
+    "유동비율": { "excellent": "200% 이상", "good": "150~200%", "warning": "100~150%", "poor": "100% 미만" },
+    "영업이익률": { "excellent": "10% 이상", "good": "5~10%", "warning": "0~5%", "poor": "0% 미만" },
+    "매출성장률": { "excellent": "20% 이상", "good": "10~20%", "warning": "0~10%", "poor": "0% 미만" },
+    "리스크점수": { "excellent": "80~100", "good": "60~79", "warning": "40~59", "poor": "0~39" },
+    "거버넌스점수": { "excellent": "8~10", "good": "6~8", "warning": "4~6", "poor": "0~4" }
   },
   "interpretation": {
-    "flow": "매출 증가 → 이익률 개선 → 유보율 확대 → 부채 축소 → 재무 안정성 상승",
+    "grade_flow": "A+ (9점 이상) → A (8점) → B+ (7점) → B (6점) → C+ (5점) → C (4점) → D (4점 미만)",
+    "insight_flow": "리스크 점수 우수 → 거버넌스 안정 → 매출성장률 양호 → 영업이익률 개선 → ROE 상승 → EPS 증가 → 배당 지급",
     "color_rules": {
-      "positive": "green",
+      "excellent": "green",
+      "good": "blue",
       "warning": "yellow",
-      "risk": "red",
-      "standard": "blue"
+      "poor": "red"
     }
   },
-  "sync_policy": {
-    "auto": {
-      "behavior": "위시리스트 추가 시 즉시 수집",
-      "status_text": { "busy": "자동 동기화 진행 중", "done": "자동 동기화 완료", "idle": "자동 동기화 대기" }
-    },
-    "manual": {
-      "button_visible": true,
-      "action": "클릭 시 선택 기업 일괄 동기화"
-    },
-    "retry": { "max_attempts": 2, "backoff_seconds": 5 },
-    "logging": { "collect": ["요청 수", "성공/실패 수", "실패 사유 샘플"] }
+  "missing_value_policy": {
+    "division_by_zero": "지표 미표시 (null)",
+    "negative_equity": "지표 계산 제외",
+    "fallback_accounts": "대체 계정 매핑 시도",
+    "rendering": { "null_display": "N/A", "badge_color": "gray" }
   },
   "limitations": [
-    "공시 지연/정정으로 시점별 수치가 변동될 수 있음",
+    "공시 지연·정정으로 시점별 수치가 변동될 수 있음",
     "양식 차이로 일부 계정 매핑 누락 가능",
-    "투자 판단은 이용자 책임"
+    "투자 등급은 참고용이며 투자 판단은 이용자 책임",
+    "실시간 주가·시가총액 미반영"
   ],
   "privacy": {
     "cookies": "세션 유지 목적 최소 사용",
@@ -88,11 +105,16 @@
     "deletion": "설정 > 계정 삭제 기능 제공"
   },
   "changelog": [
-    { "date": "2025-11-05", "changes": ["5개년 지원", "보고서/연결 우선순위 자동", "결측치 처리 개선"] }
+    { "date": "2025-11-24", "version": "2.2.1", "changes": ["모바일 웹 반응형 UI 지원", "차트 비율 고정 및 스크롤 개선", "툴팁 모바일 최적화"] },
+    { "date": "2025-11-20", "version": "2.2.0", "changes": ["투자 등급 분석 시스템 추가", "안전성/성장성/수익성 스코어링", "리스크·거버넌스 점수 통합"] },
+    { "date": "2025-11-15", "version": "2.1.0", "changes": ["9개 KPI 지표 대시보드", "시각화 차트 5종 추가", "추세 분석 인사이트"] },
+    { "date": "2025-11-10", "version": "2.0.0", "changes": ["V2.0 아키텍처 재설계", "DB 스키마 리팩토링", "API 구조 개선"] },
+    { "date": "2025-11-05", "version": "0.1.0", "changes": ["5개년 지원", "보고서/연결 우선순위 자동", "결측치 처리 개선"] }
   ],
-  "roadmap": ["주가 연동", "ISIN/법정코드 매핑", "KRX 공개파일 매칭"],
-  "contact": { "email": "jhero1370@kangwon.ac.kr"},
+  "roadmap": ["주가 연동 및 PER/PBR 지표", "업종별 비교 분석", "알림 기능"],
+  "contact": { "email": "jhero1370@kangwon.ac.kr" },
   "notices": [
-    "본 서비스는 금융감독원 전자공시시스템(OpenDART) 자료를 가공·시각화합니다."
+    "본 서비스는 금융감독원 전자공시시스템(OpenDART) 자료를 가공·시각화합니다.",
+    "투자 등급 및 점수는 참고용이며, 최종 투자 결정은 이용자의 판단에 따릅니다."
   ]
 }

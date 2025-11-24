@@ -2,9 +2,13 @@ export const INSIGHT_METRICS = [
   // ========== Financial KPIs (6개) ==========
   {
     key: "roe",
-    title: "ROE (자기자본이익률)",
+    title: "ROE",
     format: "pct",
     color: { type: "roe" },
+    tooltip: {
+      formula: "당기순이익 / 자본총계 × 100",
+      description: "자기자본이익률(Return on Equity). 투자한 자본으로 얼마나 효율적으로 이익을 창출하는지 보여줍니다. 10% 이상이면 우수, 5~10% 양호, 0~5% 주의, 0% 미만 위험."
+    },
     explanation: {
       heading: "ROE: 자본 대비 수익성",
       description: "자기자본이익률 = (당기순이익 / 자본총계) × 100. 투자한 자본으로 얼마나 효율적으로 이익을 창출하는지 보여줍니다.",
@@ -21,6 +25,10 @@ export const INSIGHT_METRICS = [
     title: "부채비율",
     format: "pct",
     color: { type: "debt" },
+    tooltip: {
+      formula: "부채총계 / 자본총계 × 100",
+      description: "재무 건전성 지표. 낮을수록 재무 안정성이 높습니다. 100% 이하 우수, 100~200% 양호, 200~300% 주의, 300% 이상 위험."
+    },
     explanation: {
       heading: "부채비율: 재무 건전성",
       description: "부채비율 = (부채총계 / 자본총계) × 100. 낮을수록 재무 안정성이 높습니다.",
@@ -37,6 +45,10 @@ export const INSIGHT_METRICS = [
     title: "유동비율",
     format: "pct",
     color: { type: "current" },
+    tooltip: {
+      formula: "유동자산 / 유동부채 × 100",
+      description: "단기 지급능력 지표. 단기 채무 상환 능력을 나타냅니다. 200% 이상 우수, 150~200% 양호, 100~150% 주의, 100% 미만 위험."
+    },
     explanation: {
       heading: "유동비율: 단기 지급능력",
       description: "유동비율 = (유동자산 / 유동부채) × 100. 단기 채무 상환 능력을 나타냅니다.",
@@ -53,6 +65,10 @@ export const INSIGHT_METRICS = [
     title: "영업이익률",
     format: "pct",
     color: { type: "opm" },
+    tooltip: {
+      formula: "영업이익 / 매출액 × 100",
+      description: "본업 수익성 지표. 본업에서 얼마나 효율적으로 이익을 창출하는지 보여줍니다. 10% 이상 우수, 5~10% 양호, 0~5% 주의, 0% 미만 위험."
+    },
     explanation: {
       heading: "영업이익률: 본업 수익성",
       description: "영업이익률 = (영업이익 / 매출액) × 100. 본업에서 얼마나 효율적으로 이익을 창출하는지 보여줍니다.",
@@ -66,9 +82,13 @@ export const INSIGHT_METRICS = [
   },
   {
     key: "revenueGrowth",
-    title: "매출성장률 (YoY)",
+    title: "매출성장률",
     format: "pct",
     color: { type: "growth" },
+    tooltip: {
+      formula: "(당해 매출 - 전년 매출) / 전년 매출 × 100",
+      description: "전년 대비 매출 성장률(YoY). 기업의 성장세를 보여줍니다. 20% 이상 우수, 10~20% 양호, 0~10% 주의, 0% 미만 역성장."
+    },
     explanation: {
       heading: "매출성장률: 성장성 지표",
       description: "매출성장률 = ((당해 매출 - 전년 매출) / 전년 매출) × 100. 기업의 성장세를 보여줍니다.",
@@ -82,9 +102,13 @@ export const INSIGHT_METRICS = [
   },
   {
     key: "eps",
-    title: "EPS (주당순이익)",
+    title: "EPS",
     format: "won",
     color: { type: "static", value: "metric-neutral" },
+    tooltip: {
+      formula: "당기순이익 / 발행주식수",
+      description: "주당순이익(Earnings Per Share). 투자자가 주식 1주당 얻는 이익을 나타냅니다. 높을수록 우수하며, 업종별 비교를 권장합니다."
+    },
     explanation: {
       heading: "EPS: 주당 수익",
       description: "주당순이익 = 당기순이익 / 발행주식수. 투자자가 주식 1주당 얻는 이익을 나타냅니다.",

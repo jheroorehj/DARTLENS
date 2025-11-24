@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Topbar from "./components/Topbar";
 import Sidebar from "./components/Sidebar";
 import WishlistPanel from "./components/WishlistPanel";
+import MobileNav from "./components/MobileNav";
 
 export default function App() {
   const location = useLocation();
@@ -46,6 +47,9 @@ export default function App() {
           <WishlistPanel />
         </div>
       </div>
+
+      {/* Mobile bottom navigation (768px and below) */}
+      <MobileNav />
     </div>
   );
 }

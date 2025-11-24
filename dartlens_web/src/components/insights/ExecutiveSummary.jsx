@@ -121,9 +121,13 @@ function ScoreCard({ title, subtitle, score, icon, insight, color, tooltip, bonu
   useEffect(() => {
     if (showTooltip && infoRef.current) {
       const rect = infoRef.current.getBoundingClientRect();
+      // 상단 공간 부족시 하단에 표시
+      const spaceAbove = rect.top;
+      const showBelow = spaceAbove < 150;
+
       setTooltipPosition({
-        top: rect.top - 8,
-        left: rect.left + rect.width / 2,
+        top: showBelow ? rect.bottom + 8 : rect.top - 8,
+        showBelow,
       });
     }
   }, [showTooltip]);
@@ -145,6 +149,14 @@ function ScoreCard({ title, subtitle, score, icon, insight, color, tooltip, bonu
                   className="metric-card-info score-card-info"
                   onMouseEnter={() => setShowTooltip(true)}
                   onMouseLeave={() => setShowTooltip(false)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowTooltip(!showTooltip);
+                  }}
+                  onTouchStart={(e) => {
+                    e.stopPropagation();
+                    setShowTooltip(!showTooltip);
+                  }}
                 >
                   ?
                 </span>
@@ -154,8 +166,12 @@ function ScoreCard({ title, subtitle, score, icon, insight, color, tooltip, bonu
                     style={{
                       position: 'fixed',
                       top: `${tooltipPosition.top}px`,
-                      left: `${tooltipPosition.left}px`,
-                      transform: 'translate(-50%, -100%)',
+                      left: '10px',
+                      right: '10px',
+                      transform: tooltipPosition.showBelow ? 'translateY(0)' : 'translateY(-100%)',
+                      width: 'calc(100vw - 20px)',
+                      maxWidth: '320px',
+                      margin: '0 auto',
                     }}
                   >
                     <div className="metric-card-tooltip-formula">{tooltip.formula}</div>

@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
+    "build": "cd ../dartlens_web && npm run build",
+    "serve": "npm run build && node server.js",
     "db:migrate": "node scripts/migrate.mjs"
   },
   "keywords": [

@@ -5,6 +5,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // V2.0 Routes
 import authRouter from './src/routes/auth.js';
@@ -27,12 +32,23 @@ if (process.env.MIGRATE_ON_BOOT === 'true') {
   console.log('[Server] Database migration completed');
 }
 
-// Security middleware
-app.use(helmet());
+// Security middleware (relaxed CSP for SPA)
+app.use(helmet({
+  contentSecurityPolicy: false, // Disable CSP for SPA compatibility
+}));
 
 // CORS configuration
+const corsOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : [];
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (same-origin, mobile apps, etc.)
+    if (!origin) return callback(null, true);
+    // Allow configured origins
+    if (corsOrigins.includes(origin)) return callback(null, true);
+    // Allow trycloudflare.com subdomains
+    if (origin.endsWith('.trycloudflare.com')) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
 }));
 
@@ -65,7 +81,20 @@ app.use('/api/insights/v2', insightsV2Router); // V2.0: 정규화 + KPI 통합
 app.use('/api/insights', insightsRouter);      // Legacy: 하위 호환성 유지
 app.use('/api/admin', requireAdmin, adminRouter);
 
-// 404 handler
+// Serve Frontend static files (production)
+const frontendPath = path.join(__dirname, '../dartlens_web/dist');
+app.use(express.static(frontendPath));
+
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req, res, next) => {
+  // Skip API routes
+  if (req.path.startsWith('/api') || req.path === '/health') {
+    return next();
+  }
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+// 404 handler for API routes only
 app.use((req, res) => {
   res.status(404).json({
     success: false,

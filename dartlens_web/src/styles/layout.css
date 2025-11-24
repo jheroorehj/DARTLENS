@@ -232,3 +232,128 @@
   overflow-y: auto;
   min-height: 0;
 }
+
+/* ========================================
+   MOBILE RESPONSIVE LAYOUT
+   ======================================== */
+
+/* Tablet and below - hide sidebar */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .app-container {
+    padding: 0 var(--spacing-sm) var(--spacing-md);
+    padding-bottom: calc(var(--spacing-md) + 70px); /* Space for mobile nav */
+  }
+
+  .app-main {
+    border-radius: var(--radius-md);
+    margin-top: 0;
+  }
+
+  .app-main-inner {
+    height: auto;
+    min-height: calc(100vh - 140px); /* Header + mobile nav */
+  }
+
+  .topbar-inner {
+    height: auto;
+    min-height: var(--header-height);
+    padding: var(--spacing-sm);
+  }
+
+  .topbar-logo {
+    margin-left: 0;
+  }
+
+  .topbar-logo img {
+    height: 2.25rem;
+  }
+
+  .topbar-nav {
+    margin-right: 0;
+    gap: var(--spacing-xs);
+  }
+
+  .topbar-auth-btn img,
+  .topbar-wishlist-btn img {
+    height: 1.75rem;
+  }
+
+  .topbar-logout-btn img {
+    height: 1.25rem;
+  }
+}
+
+/* Mobile - smaller adjustments */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0 var(--spacing-xs) var(--spacing-sm);
+    padding-bottom: calc(var(--spacing-sm) + 70px);
+  }
+
+  .topbar-logo img {
+    height: 1.875rem;
+  }
+
+  .topbar-auth-btn img,
+  .topbar-wishlist-btn img {
+    height: 1.5rem;
+  }
+}
+
+/* ========================================
+   MOBILE BOTTOM NAVIGATION
+   ======================================== */
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-sticky);
+  background-color: var(--color-bg-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--spacing-xs) 0;
+  padding-bottom: env(safe-area-inset-bottom, var(--spacing-xs));
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  min-width: 64px;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.active {
+  color: var(--color-primary);
+}
+
+.mobile-nav-item svg {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 2px;
+}
+
+.mobile-nav-item span {
+  font-size: 10px;
+  font-weight: var(--font-weight-medium);
+}

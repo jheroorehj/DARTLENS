@@ -397,3 +397,146 @@
 .auth-footer-link:hover {
   color: var(--color-primary-hover);
 }
+
+/* ========================================
+   MOBILE RESPONSIVE PAGES
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Home Page Mobile */
+  .home-page {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .home-info {
+    padding: var(--spacing-sm);
+  }
+
+  .home-info-title {
+    font-size: var(--font-size-base);
+  }
+
+  .home-search {
+    padding: var(--spacing-sm);
+  }
+
+  .home-result-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .home-result-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .home-result-name {
+    font-size: var(--font-size-sm);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .home-result-add-btn {
+    min-height: 36px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Dashboard Page Mobile */
+  .dashboard-page {
+    padding: var(--spacing-sm);
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .dashboard-title {
+    font-size: var(--font-size-base);
+  }
+
+  .dashboard-empty {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+
+  /* Info Page Mobile */
+  .info-page {
+    padding: var(--spacing-sm);
+  }
+
+  .info-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .info-title {
+    font-size: var(--font-size-base);
+  }
+
+  .info-section-content li {
+    margin-bottom: var(--spacing-md);
+  }
+
+  /* Auth Pages Mobile */
+  .auth-page {
+    padding: var(--spacing-sm);
+    align-items: flex-start;
+    padding-top: var(--spacing-xl);
+  }
+
+  .auth-card {
+    padding: var(--spacing-md);
+  }
+
+  .auth-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .auth-submit-btn {
+    min-height: 48px;
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Home Page Small Mobile */
+  .home-info-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .home-search-label-text {
+    font-size: var(--font-size-xs);
+  }
+
+  .home-result-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-result-add-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: var(--spacing-xs);
+  }
+
+  /* Dashboard Small Mobile */
+  .dashboard-title {
+    font-size: var(--font-size-sm);
+  }
+
+  /* Auth Small Mobile */
+  .auth-card {
+    border-radius: var(--radius-md);
+  }
+
+  .auth-title {
+    font-size: var(--font-size-lg);
+  }
+}
