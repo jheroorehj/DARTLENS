@@ -830,10 +830,10 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ## 개발자 정보
 
-**DART:Lens Team**
+**DART:Lens**
 
-- **프로젝트 관리**: DOUZONE
-- **개발 기간**: 2025.01 ~
+- **프로젝트 관리**: DOUZONE ICT GROUP INTERNSHIP
+- **개발 기간**: 2025.10 ~
 - **개발자**: 장영웅
 - **버전**: V2.2.1
 - **최종 수정일**: 2025-11-25
