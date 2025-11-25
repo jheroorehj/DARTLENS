@@ -872,14 +872,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 - **프로젝트 관리**: DOUZONE
 - **개발 기간**: 2025.01 ~
 - **개발자**: 장영웅
-- **버전**: V2.0.0
-- **최종 수정일**: 2025-11-23
-
-### 문의
-
-- **이슈 트래커**: [GitHub Issues](https://github.com/your-username/dartlens/issues)
-- **이메일**: dev@dartlens.com
-- **문서**: [프로젝트 Wiki](https://github.com/your-username/dartlens/wiki)
+- **버전**: V2.2.1
+- **최종 수정일**: 2025-11-25
 
 ---
 
