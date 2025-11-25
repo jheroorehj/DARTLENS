@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { fetchWithMock } from "../services/mockApi";
 import { wishlistApi } from "../services/api";
+import notify from "../utils/notification";
 
 // API base URL from environment or default to empty (proxied)
 const API_BASE = import.meta.env.VITE_API_BASE || "";
@@ -113,7 +114,7 @@ export default function Home() {
       }
 
       if (data.ok) {
-        alert(`${corporation.corp_name}이(가) WISH:List에 추가되었습니다.`);
+        notify(`${corporation.corp_name}이(가) WISH:List에 추가되었습니다.`, 'success');
 
         // Trigger wishlist reload via BroadcastChannel
         try {
@@ -138,11 +139,11 @@ export default function Home() {
           console.error("Auto-sync trigger failed:", error);
         }
       } else {
-        alert(`추가 실패: ${data.message || "오류"}`);
+        notify(`추가 실패: ${data.message || "오류"}`, 'error');
       }
     } catch (error) {
       console.error("Add to wishlist error:", error);
-      alert("네트워크 오류로 추가하지 못했습니다.");
+      notify("네트워크 오류로 추가하지 못했습니다.", 'error');
     }
   }
 

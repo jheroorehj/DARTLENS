@@ -3,6 +3,7 @@ import { useSelection } from "../context/SelectionContext";
 import { useAuth } from "../context/AuthContext";
 import { fetchWithMock } from "../services/mockApi";
 import { wishlistApi } from "../services/api";
+import notify from "../utils/notification";
 
 // LocalStorage key for auto-sync preference
 const AUTO_SYNC_KEY = "dartlens:autoSync";
@@ -115,7 +116,8 @@ export default function WishlistContent({ variant = "panel" }) {
    * Delete item from wishlist
    */
   async function handleDelete(corpCode) {
-    if (!window.confirm("WISH:List에서 삭제하시겠습니까?")) {
+    const confirmed = await notify("WISH:List에서 삭제하시겠습니까?", 'confirm');
+    if (!confirmed) {
       return;
     }
 
@@ -130,7 +132,7 @@ export default function WishlistContent({ variant = "panel" }) {
           // Remove from local state
           setRows((prev) => prev.filter((r) => r.corp_code !== corpCode));
         } else {
-          alert("삭제 실패");
+          notify("삭제 실패", 'error');
         }
       } else {
         // Use real API
@@ -140,7 +142,7 @@ export default function WishlistContent({ variant = "panel" }) {
       }
     } catch (error) {
       console.error("Delete error:", error);
-      alert("네트워크 오류");
+      notify("네트워크 오류", 'error');
     }
   }
 
@@ -169,13 +171,13 @@ export default function WishlistContent({ variant = "panel" }) {
         const addedCount = data.added?.length || 0;
         const foundCount = data.found || 0;
         const expectedCount = data.expected || 20;
-        alert(`동기화 완료!\n새로 추가: ${addedCount}건\n전체 데이터: ${foundCount}/${expectedCount}건`);
+        notify(`동기화 완료!\n새로 추가: ${addedCount}건\n전체 데이터: ${foundCount}/${expectedCount}건`, 'success');
       } else {
-        alert(`동기화 실패: ${data.message || "오류"}`);
+        notify(`동기화 실패: ${data.message || "오류"}`, 'error');
       }
     } catch (error) {
       console.error("Sync error:", error);
-      alert("네트워크 오류");
+      notify("네트워크 오류", 'error');
     } finally {
       setSyncing((prev) => ({ ...prev, [corpCode]: false }));
       setSyncPhase("대기");
