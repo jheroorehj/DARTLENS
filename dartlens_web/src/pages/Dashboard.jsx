@@ -132,7 +132,7 @@ export default function Dashboard() {
         <div ref={scrollRef} className="dashboard-insights">
           {!corpCode ? (
             <div className="dashboard-empty">
-              오른쪽 위시리스트에서 기업을 선택하세요.
+              오른쪽 WISH:List에서 기업을 선택하세요.
             </div>
           ) : snapshot?.timeSeries?.length > 0 ? (
             <>

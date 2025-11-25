@@ -63,7 +63,7 @@
       "excluded": ["실시간 주가", "시가총액"],
       "refresh_policy": {
         "manual_sync": "버튼 클릭 시 수집·업서트",
-        "auto_sync": "위시리스트 추가 시 자동 동기화",
+        "auto_sync": "WISH:List 추가 시 자동 동기화",
         "cache_ttl_hours": 24
       }
     }

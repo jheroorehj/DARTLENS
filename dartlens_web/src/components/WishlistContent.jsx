@@ -103,7 +103,7 @@ export default function WishlistContent({ variant = "panel" }) {
       setRows(items);
     } catch (err) {
       if (err.name !== "AbortError") {
-        setError("위시리스트 로딩 실패");
+        setError("WISH:List 로딩 실패");
         console.error("Wishlist load error:", err);
       }
     } finally {
@@ -115,7 +115,7 @@ export default function WishlistContent({ variant = "panel" }) {
    * Delete item from wishlist
    */
   async function handleDelete(corpCode) {
-    if (!window.confirm("위시리스트에서 삭제하시겠습니까?")) {
+    if (!window.confirm("WISH:List에서 삭제하시겠습니까?")) {
       return;
     }
 
@@ -250,7 +250,7 @@ export default function WishlistContent({ variant = "panel" }) {
     <div className={containerClass}>
       {/* Header section */}
       <div className="wishlist-header">
-        {variant !== "modal" && <h2 className="wishlist-title">위시리스트</h2>}
+        {variant !== "modal" && <h2 className="wishlist-title">WISH:List</h2>}
 
         {/* Auto-sync toggle */}
         <div className="wishlist-auto-sync">
@@ -273,7 +273,7 @@ export default function WishlistContent({ variant = "panel" }) {
       <div className="wishlist-list-container">
         {rows.length === 0 ? (
           <div className="wishlist-empty">
-            {loading ? "로딩 중..." : "위시리스트가 비어 있습니다."}
+            {loading ? "로딩 중..." : "WISH:List가 비어 있습니다."}
           </div>
         ) : (
           <ul className="wishlist-list">

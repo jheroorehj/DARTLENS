@@ -106,7 +106,7 @@ export const mockApi = {
         corpName,
         addedAt: new Date().toISOString().split("T")[0],
       },
-      message: "위시리스트에 추가되었습니다.",
+      message: "WISH:List에 추가되었습니다.",
     };
   },
 
@@ -118,7 +118,7 @@ export const mockApi = {
 
     return {
       ok: true,
-      message: "위시리스트에서 제거되었습니다.",
+      message: "WISH:List에서 제거되었습니다.",
     };
   },
 

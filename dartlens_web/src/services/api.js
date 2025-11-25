@@ -206,7 +206,7 @@ export const wishlistApi = {
 
     return {
       ok: response.ok || true,
-      message: '위시리스트에 추가되었습니다.',
+      message: 'WISH:List에 추가되었습니다.',
     };
   },
 
@@ -220,7 +220,7 @@ export const wishlistApi = {
 
     return {
       ok: true,
-      message: '위시리스트에서 제거되었습니다.',
+      message: 'WISH:List에서 제거되었습니다.',
     };
   },
 };

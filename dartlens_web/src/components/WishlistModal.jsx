@@ -34,7 +34,7 @@ export default function WishlistModal({ onClose }) {
       <div className="wishlist-modal">
         {/* Modal header with close button */}
         <div className="wishlist-modal-header">
-          <h2 className="wishlist-modal-title">위시리스트</h2>
+          <h2 className="wishlist-modal-title">WISH:List</h2>
           <button
             type="button"
             onClick={onClose}

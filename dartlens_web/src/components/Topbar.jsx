@@ -43,12 +43,12 @@ export default function Topbar() {
               type="button"
               onClick={() => setOpenWishlist(true)}
               className="topbar-wishlist-btn"
-              aria-label="위시리스트 열기"
-              title="위시리스트"
+              aria-label="WISH:List 열기"
+              title="WISH:List"
             >
               <img
                 src="/wishlist_BTN.png"
-                alt="위시리스트"
+                alt="WISH:List"
                 className="img-interactive"
               />
             </button>

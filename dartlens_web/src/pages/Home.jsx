@@ -113,7 +113,7 @@ export default function Home() {
       }
 
       if (data.ok) {
-        alert(`${corporation.corp_name}이(가) 위시리스트에 추가되었습니다.`);
+        alert(`${corporation.corp_name}이(가) WISH:List에 추가되었습니다.`);
 
         // Trigger wishlist reload via BroadcastChannel
         try {
@@ -156,10 +156,10 @@ export default function Home() {
         <h2 className="home-info-title">DART:Lens 안내</h2>
         <ul className="list-bullet">
           <li>
-            검색창에서 원하는 기업을 검색해 선택하면 위시리스트에 추가할 수 있습니다.
+            검색창에서 원하는 기업을 검색해 선택하면 WISH:List에 추가할 수 있습니다.
           </li>
           <li>
-            위시리스트에 추가된 기업은 모니터링 페이지에서 인사이트를 확인할 수 있습니다.
+            WISH:List에 추가된 기업은 모니터링 페이지에서 인사이트를 확인할 수 있습니다.
           </li>
         </ul>
       </section>
