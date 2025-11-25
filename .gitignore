@@ -12,6 +12,7 @@
 *.keystore
 *.db
 *.md
+!README.md
 config.json
 credentials.json
 secrets.json
